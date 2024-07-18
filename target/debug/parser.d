@@ -1,1 +1,0 @@
-/media/rira/Extra/COde\ work/Things/parser/target/debug/parser: /media/rira/Extra/COde\ work/Things/parser/src/lexer.rs /media/rira/Extra/COde\ work/Things/parser/src/main.rs /media/rira/Extra/COde\ work/Things/parser/src/parseTree.rs /media/rira/Extra/COde\ work/Things/parser/src/table_setup/file_io.rs /media/rira/Extra/COde\ work/Things/parser/src/table_setup.rs
