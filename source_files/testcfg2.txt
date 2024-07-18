@@ -1,0 +1,13 @@
+S
+    : a
+    | i E t S Sd
+    ;
+
+Sd
+    : Null
+    | e S
+    ;
+
+E
+    : b
+    ;

@@ -1,0 +1,23 @@
+E
+    : T Ed
+    ;
+
+Ed
+    : Null 
+    | plus T Ed
+    ;
+
+T
+    : F Td
+    ;
+
+Td
+    : Null
+    | asterisk F Td
+    ;
+
+F
+    : leftb E rightb
+    | id
+    | num
+    ;
