@@ -16,7 +16,7 @@ pub fn load_symbols(path: &String, T: &mut Vec<Symbol>, ver: SymbolType) {
             text.push(line);
         }
     }
-    for (i, st) in text.iter().enumerate() {
+    for (_i, st) in text.iter().enumerate() {
         // `index` is the index of the current element, and `st` is a reference to the element
         let st = st.clone(); // Clone the element if you need to own it
         let mut index = None;
@@ -84,7 +84,7 @@ pub fn load_Production_Rules(
             // println!("{}", part);
             let tokens: Vec<&str> = part.split(' ').collect();
             for token in tokens {
-                let mut toke: String = token.clone().into(); // Initialize with the original token value
+                let mut toke: String = token.to_string(); // Initialize with the original token value
                 if toke.starts_with("'") {
                     toke = toke[("'".len())..].to_string(); // Remove the first character and subsequent substring
                 }

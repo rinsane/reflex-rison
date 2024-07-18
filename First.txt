@@ -11,8 +11,8 @@ plus
 T
 [
 num
-id
 leftb
+id
 ]
 Td
 [
@@ -20,9 +20,9 @@ asterisk
 ]
 F
 [
+id
 num
 leftb
-id
 ]
 id
 [

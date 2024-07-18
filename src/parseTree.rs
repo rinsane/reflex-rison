@@ -1,17 +1,11 @@
 use super::*;
-use std::collections::{HashMap, VecDeque};
-use std::{borrow::BorrowMut, cell::RefCell, rc::Rc};
+use std::collections::HashMap;
+use std::borrow::BorrowMut;
+
 #[derive(Debug, Clone)]
 pub struct TreeNode {
     val: (i32, i32),
     children: Vec<Box<TreeNode>>,
-}
-
-fn insert(head: &mut TreeNode, val: (i32, i32)) {
-    head.children.push(Box::new(TreeNode {
-        val: val,
-        children: Vec::new(),
-    }));
 }
 
 fn DFS(head: &mut TreeNode, val: (i32, i32)) -> Option<&mut TreeNode> {
@@ -28,24 +22,7 @@ fn DFS(head: &mut TreeNode, val: (i32, i32)) -> Option<&mut TreeNode> {
     }
     return Option::None;
 }
-fn print_tree(root: &TreeNode, prefix: i32, rm: &HashMap<i32, String>) {
-    for i in 0..prefix {
-        print!("\t");
-    }
-    print!("{}", rm[&root.val.0]);
-    print!("\n");
-    let num_children = root.children.len();
-    for (index, child) in root.children.iter().enumerate() {
-        let is_last = index == num_children - 1;
-        let new_rm = format!("{}", if is_last { "└──" } else { "├──" });
-        for i in 0..(prefix - 1) {
-            print!("\t");
-        }
-        print!("{new_rm}");
-        print_tree(child, prefix + 1, rm);
-        print!("\n");
-    }
-}
+
 fn print_treee(
     root: &TreeNode,
     color: Colour,
@@ -77,20 +54,7 @@ fn print_treee(
         print_treee(child, color, new_prefix, is_last_child, rm);
     }
 }
-fn print_level_order(root: &TreeNode, rm: &HashMap<i32, String>) {
-    let mut queue = VecDeque::new();
-    queue.push_back(root);
 
-    while !queue.is_empty() {
-        if let Some(node) = queue.pop_front() {
-            print!("{} ", rm[&node.val.0]);
-
-            for child in node.children.iter() {
-                queue.push_back(&**child);
-            }
-        }
-    }
-}
 pub fn ParserConstructor(
     map: &HashMap<String, i32>,
     count: usize,

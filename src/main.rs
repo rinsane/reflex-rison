@@ -1,9 +1,10 @@
-#[allow(non_snake_case, warnings)]
-use std::collections::HashMap;
-use std::collections::HashSet;
+#![allow(non_snake_case)]
+#![allow(non_camel_case_types)]
+
 mod lexer;
 mod parseTree;
 mod table_setup;
+use std::collections::{HashMap, HashSet};
 use ansi_term::Colour;
 use lexer::*;
 use parseTree::*;
@@ -11,9 +12,11 @@ use rand::prelude::*;
 use std::cmp;
 use table_setup::*;
 use term_size::dimensions_stdout;
+
 fn main() {
+
     //!Keywords
-    let keyset: HashSet<&str> = {
+    let _keyset: HashSet<&str> = {
         let mut map = HashSet::new();
         map.insert("auto");
         map.insert("break");
@@ -95,7 +98,7 @@ fn main() {
         map.insert(">");
         map
     };
-    let keywords: HashMap<&str, &str> = {
+    let _keywords: HashMap<&str, &str> = {
         let mut map = HashMap::new();
         map.insert("auto", "AUTO");
         map.insert("break", "BREAK");
@@ -231,7 +234,8 @@ fn main() {
         &mut terminal_indices,
         &mut first,
     );
-    let (mut T, mut final_rules) = table_maker(
+
+    let (T, mut final_rules) = table_maker(
         &mut terminals,
         &mut rules,
         &mut first,
@@ -250,14 +254,12 @@ fn main() {
     // RGB values for bright blue
     let bright_blue = Colour::RGB(0, 191, 255);
     // Unicode escape sequence for smiley emoji
-    let smiley = "\u{1F60A}";
     // Get terminal width
     let (term_width, _) = dimensions_stdout().unwrap_or((80, 25)); // Default width: 80
 
     // Text content
     let text = format!(
-        "{}{}Parse tree ban gya finally{}{}\n\n",
-        smiley, smiley, smiley, smiley
+        "Parse Tree for the provided snippet:\n\n",
     );
 
     // Calculate padding
@@ -277,6 +279,7 @@ fn main() {
     );
 }
 
+#[allow(dead_code)]
 fn LLDriver(
     map: &HashMap<String, i32>,
     count: usize,

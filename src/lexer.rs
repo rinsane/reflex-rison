@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fs;
 
+#[allow(dead_code)]
 pub struct Token {
     pub val: String,
     pub kind: String,
@@ -18,7 +19,7 @@ pub fn lexer(
         .chain('A'..='Z')
         .chain(std::iter::once('_'))
         .collect();
-    let H: HashSet<char> = ('a'..='f').chain('A'..='F').chain('0'..='9').collect();
+    let _H: HashSet<char> = ('a'..='f').chain('A'..='F').chain('0'..='9').collect();
     let ic: HashSet<char> = [' ', '\t', '\n', '\r', '\x0B', '\x0C']
         .iter()
         .cloned()
@@ -38,10 +39,10 @@ pub fn lexer(
     let mut tokens: Vec<Token> = Vec::new();
     let mut s: usize = 0;
     // Convert the string to a vector of characters
-    let mut cv: Vec<char> = contents.chars().collect();
+    let cv: Vec<char> = contents.chars().collect();
     // cv = dbg!(cv);
     // println!("{}",cv.len());
-    while true {
+    loop {
         // println!("{s}");
         if s >= cv.len() {
             break;
@@ -215,7 +216,7 @@ mod tests {
     use super::*;
     #[test]
     fn lexing() {
-        let KEYWORDS: HashSet<&str> = {
+        let _KEYWORDS: HashSet<&str> = {
             let mut map = HashSet::new();
             map.insert("auto");
             map.insert("break");
@@ -297,7 +298,7 @@ mod tests {
             map.insert(">");
             map
         };
-        let keywords: HashMap<&str, &str> = {
+        let _keywords: HashMap<&str, &str> = {
             let mut map = HashMap::new();
             map.insert("auto", "AUTO");
             map.insert("break", "BREAK");
@@ -400,7 +401,7 @@ mod tests {
             map
         };
         let file = "example_file/ex2.c";
-        let mut tokens = lexer(file, K, key);
+        let tokens = lexer(file, K, key);
         for i in tokens {
             println!("{} {}", i.val, i.kind);
         }

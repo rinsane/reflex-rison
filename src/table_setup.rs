@@ -34,20 +34,7 @@ pub struct Symbol {
     name: String,
     tyype: SymbolType,
 }
-/*
-!rules:Vec<Vec<Vec<i32>>>
-!terminals:Vec<Symbol>
-!non_terminals:Vec<Symbol>
-!map:HashMap<String,i32>
-!nullables:HashSet<i32>
-!terminal_indices:HashSet<i32>
- */
 
-fn print_symbol_vector(symbols: &[Symbol]) {
-    for symbol in symbols {
-        println!("Name: {}", symbol.name);
-    }
-}
 pub fn construct(
     terminals_path: &str,
     non_terminals_path: &str,
@@ -106,7 +93,7 @@ pub fn construct(
     // terminal_indices = dbg!(terminal_indices);
     for (i, val) in rules.iter_mut().enumerate() {
         let mut check_left_recursion: bool = false;
-        for (index, inner_val) in val.iter().enumerate() {
+        for (_, inner_val) in val.iter().enumerate() {
             if inner_val[0] == i as i32 {
                 check_left_recursion = true;
                 break;
@@ -173,7 +160,7 @@ fn remove_left_recursion(
 ) {
     let mut beta: Vec<Vec<i32>> = Vec::new();
     let mut alpha: Vec<Vec<i32>> = Vec::new();
-    for (i, val) in rules[index as usize].iter_mut().enumerate() {
+    for (_, val) in rules[index as usize].iter_mut().enumerate() {
         if val[0] == index {
             val.remove(0);
             alpha.push(val.clone());
@@ -187,25 +174,26 @@ fn remove_left_recursion(
         tyype: SymbolType::NonTerminal,
     });
 
-    let mut namme = non_terminals[non_terminals.len() - 1].name.clone();
+    let namme = non_terminals[non_terminals.len() - 1].name.clone();
     map.insert(
         namme.clone(),
         (non_terminals.len() + terminals.len() - 1) as i32,
     );
     nullables.insert(map[&namme[..]]);
-    for (i, val) in beta.iter_mut().enumerate() {
+    for (_, val) in beta.iter_mut().enumerate() {
         val.push(map[&namme[..]]);
         rules[index as usize].push(val.clone());
     }
     rules.push(Vec::new());
     let rul_ind = rules.len() - 1;
     rules[rul_ind as usize].push(vec![map[&"Null".to_string()[..]]]);
-    for (i, val) in alpha.iter_mut().enumerate() {
+    for (_, val) in alpha.iter_mut().enumerate() {
         val.push(map[&namme[..]]);
         rules[rul_ind as usize].push(val.clone());
     }
 }
 
+#[allow(unused_variables)]
 pub fn calFIRST(
     terminals: &mut Vec<Symbol>,
     non_terminals: &mut Vec<Symbol>,
@@ -401,7 +389,7 @@ pub fn check_nullability(
         for v in val.iter() {
             let mut n_ulls = true;
             for j in v.iter() {
-                if terminal_indices.contains(j) && map[(&"Null".to_string())] != *j {
+                if terminal_indices.contains(j) && map[&"Null".to_string()] != *j {
                     n_ulls = false;
                     break;
                 } else if !terminal_indices.contains(j) && !nullables.contains(j) {
@@ -420,6 +408,7 @@ pub fn check_nullability(
     }
 }
 
+#[allow(unused_variables)]
 pub fn calFollow(
     terminals: &mut Vec<Symbol>,
     non_terminals: &mut Vec<Symbol>,
@@ -442,7 +431,7 @@ pub fn calFollow(
 
     // Iterate over the sorted pairs
     // Iterate over the sorted pairs
-    for (key, i) in pairs {
+    for (_key, i) in pairs {
         // Convert i to usize before using it as an index
         let index = *i as usize;
         if terminal_indices.contains(&(index as i32)) {
@@ -510,7 +499,7 @@ fn follow(
 
         for (ix, val) in rules.iter_mut().enumerate() {
             // println!("index num {}",ix);
-            for (uu, production) in val.iter().enumerate() {
+            for (_uu, production) in val.iter().enumerate() {
                 let mut found_index = None;
 
                 // Find the index of the symbol 'index' in the production, starting from the end
@@ -629,7 +618,7 @@ pub fn table_maker(
                 continue;
             }
             let mut fir: Vec<i32> = Vec::new();
-            for (k, value) in inner_vec.iter().enumerate() {
+            for (_k, value) in inner_vec.iter().enumerate() {
                 if terminal_indices.contains(value) && map[&"Null".to_string()] != *value as i32 {
                     fir.push(*value);
                     break;
@@ -641,56 +630,18 @@ pub fn table_maker(
                 }
             }
             // fir = dbg!(fir);
-            // println!("Firs");
             for term in fir {
                 println!("{}", rm[&term]);
                 T[i][(term - count) as usize] = counter;
             }
-            // println!("{}",counter);
-            // T[i] = dbg!(T[i].clone());
-            // println!("Rule {i} {j}");
-            // for  it in inner_vec{
-            //     println!("{}",it);
-            // }
-            // println!("InnerHere {i} {j} {} counter {}",rm[&(i as i32)],counter);
-            // for (it,val) in T[i].iter().enumerate(){
-            //     println!("{}",val);
-            // }
             counter += 1;
         }
-        // println!("Here {} counter {}",rm[&(i as i32)],counter);
-        // for (it,val) in T[i].iter().enumerate(){
-        //     println!("{}",val);
-        // }
     }
-
-    // Print values of T and final_rules
-    // println!("T: {:?}", T);
-    // println!("final_rules: {:?}", final_rules);
 
     (T, final_rules)
 }
 
-//  On line 455
-//  let mut fol:Vec<i32> = Vec::new();
-//
-//     let mut check:bool = true;
-//     for (k, &value) in inner_vec.iter().enumerate().rev() {
-//         if terminal_indices.contains(&value) {
-//             check = false;
-//             break;
-//         } else if !nullables.contains(&value) {
-//             check = false;
-//             break;
-//         }
-//     }
-//     if check{
-//         for (k, &value) in inner_vec.iter().enumerate().rev() {
-
-//         }
-//     }
-// }
-
+#[allow(dead_code)]
 fn write_2d_vector_to_file(filename: &str, vector: &Vec<Vec<i32>>) -> io::Result<()> {
     let mut file = File::create(filename)?;
 
@@ -707,6 +658,7 @@ fn write_2d_vector_to_file(filename: &str, vector: &Vec<Vec<i32>>) -> io::Result
 
     Ok(())
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -751,7 +703,7 @@ mod tests {
         //count is important as it keeps track of original no of non-terminals
         //and anatomy of rules -> old non-terminals + terminals+new non-terminals
         // rules = dbg!(rules);
-        let (mut T, mut final_rules) = table_maker(
+        let (T, final_rules) = table_maker(
             &mut terminals,
             &mut rules,
             &mut First,
@@ -762,7 +714,7 @@ mod tests {
             count as i32,
         );
         // T = dbg!(T);
-        write_2d_vector_to_file("final_rules.txt", &final_rules);
-        write_2d_vector_to_file("table.txt", &T);
+        write_2d_vector_to_file("final_rules.txt", &final_rules).unwrap();
+        write_2d_vector_to_file("table.txt", &T).unwrap();
     }
 }
