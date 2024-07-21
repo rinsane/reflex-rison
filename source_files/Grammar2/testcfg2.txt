@@ -1,0 +1,36 @@
+S
+    : a
+    | i E t S Sd
+    ;
+
+Sd
+    : Null
+    | e S
+    ;
+
+E
+    : b
+    ;
+
+
+    let tsp = File::open(terminals_symbolic_path).unwrap();
+    let tsp = io::BufReader::new(tsp);
+    let tsp: Vec<String> = tsp.lines().map(|l| l.expect("Could not parse line")).collect();
+
+    let tp = File::open(terminals_path).unwrap();
+    let tp = io::BufReader::new(tp);
+    let tp: Vec<String> = tp.lines().map(|l| l.expect("Could not parse line")).collect();
+
+    let mut key: HashMap<&str, &str> = HashMap::new();
+    let mut keyy: HashSet<&str> = HashSet::new();
+    for (k, v) in tsp.iter().zip(tp.iter()) {
+        key.insert(k, v);
+        keyy.insert(k);
+    }
+    for (k, v) in &key {
+        println!("key: {}, {}", k, v);
+    }
+
+    for k in &keyy {
+        println!("keyy: {}", k);
+    }

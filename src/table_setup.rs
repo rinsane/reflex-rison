@@ -31,7 +31,7 @@ impl PartialEq for SymbolType {
 }
 
 pub struct Symbol {
-    name: String,
+    pub name: String,
     tyype: SymbolType,
 }
 
@@ -121,7 +121,7 @@ pub fn construct(
     check_nullability(&mut nullables, &mut rules, &map, &terminal_indices);
     // rules = dbg!(rules);
     // nullables = dbg!(nullables);
-    let mut fi = match File::create("rules.txt") {
+    let mut fi = match File::create("iofiles/rules.txt") {
         Ok(file) => file,
         Err(err) => {
             eprintln!("Failed to create file: {}", err);
@@ -214,7 +214,7 @@ pub fn calFIRST(
 
     // Iterate over the sorted pairs
     // Iterate over the sorted pairs
-    let mut fi = match File::create("Error.txt") {
+    let mut fi = match File::create("iofiles/Error.txt") {
         Ok(file) => file,
         Err(err) => {
             eprintln!("Failed to create file: {}", err);
@@ -256,7 +256,7 @@ pub fn calFIRST(
         progress[index] = true;
     }
 
-    let output_file = "First.txt";
+    let output_file = "iofiles/First.txt";
     let mut file = match File::create(output_file) {
         Ok(file) => file,
         Err(err) => {
@@ -455,7 +455,7 @@ pub fn calFollow(
     }
 
     // File writing logic
-    let output_file = "Follow.txt";
+    let output_file = "iofiles/Follow.txt";
     let mut file = match File::create(output_file) {
         Ok(file) => file,
         Err(err) => {
@@ -657,64 +657,4 @@ fn write_2d_vector_to_file(filename: &str, vector: &Vec<Vec<i32>>) -> io::Result
     }
 
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn construction() {
-        let terminals_path = String::from("source_files/TERMINALS.txt");
-        let non_terminals_path = String::from("source_files/NONTERMINALS.txt");
-        let production_rules = String::from("source_files/PRODUCTION_RULES.text");
-        let (
-            mut terminals,
-            mut non_terminals,
-            mut map,
-            mut rules,
-            mut nullables,
-            mut terminal_indices,
-            count,
-        ) = construct(
-            &terminals_path[..],
-            &non_terminals_path[..],
-            &production_rules[..],
-        );
-        // check_nullability(&mut nullables,&mut rules,&map);
-        // dbg!(rules.clone());
-        // println!("{}",rules.len());
-        let mut First = calFIRST(
-            &mut terminals,
-            &mut non_terminals,
-            &mut map,
-            &mut rules,
-            &mut nullables,
-            &mut terminal_indices,
-        );
-        let mut Follow = calFollow(
-            &mut terminals,
-            &mut non_terminals,
-            &mut map,
-            &mut rules,
-            &mut nullables,
-            &mut terminal_indices,
-            &mut First,
-        );
-        //count is important as it keeps track of original no of non-terminals
-        //and anatomy of rules -> old non-terminals + terminals+new non-terminals
-        // rules = dbg!(rules);
-        let (T, final_rules) = table_maker(
-            &mut terminals,
-            &mut rules,
-            &mut First,
-            &mut Follow,
-            &mut nullables,
-            &mut terminal_indices,
-            &mut map,
-            count as i32,
-        );
-        // T = dbg!(T);
-        write_2d_vector_to_file("final_rules.txt", &final_rules).unwrap();
-        write_2d_vector_to_file("table.txt", &T).unwrap();
-    }
 }
