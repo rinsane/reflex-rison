@@ -1,1 +1,1 @@
-print("apples 1234")
+print("")

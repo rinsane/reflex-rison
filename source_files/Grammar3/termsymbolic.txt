@@ -1,6 +1,6 @@
 print
 (
 )
-az
-0-9
-"
+char
+digit
+quote

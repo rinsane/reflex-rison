@@ -153,8 +153,8 @@ mod test {
 
     #[test]
     fn grammar2() {
-        let file = "ex2.c";
-        let grammar = "Grammar2";
+        let file = "g3.c";
+        let grammar = "Grammar3";
         driverFunction(
             ("source_files/".to_owned() + grammar).as_str(),
             ("example_files/".to_owned() + file).as_str(),

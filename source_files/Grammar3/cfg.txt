@@ -5,6 +5,7 @@ PrintStmt
 Arg
     : String
     : Number
+    : Null
     ;
 
 String
