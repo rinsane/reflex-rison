@@ -11,15 +11,15 @@ use table_setup::*;
 
 use ansi_term::Colour;
 use rand::prelude::*;
-use term_size::dimensions_stdout;
 use std::cmp;
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead};
+use term_size::dimensions_stdout;
 
 fn main() {
-    let file = "ex.c";
-    let grammar = "Grammar1";
+    let file = "ex2.c";
+    let grammar = "Grammar2";
     driverFunction(
         ("source_files/".to_owned() + grammar).as_str(),
         ("example_files/".to_owned() + file).as_str(),
@@ -27,7 +27,6 @@ fn main() {
 }
 
 fn driverFunction(rootPath: &str, file: &str) {
-
     // PATHS
     let terminals_path = format!("{}/term.txt", rootPath);
     let terminals_symbolic_path = format!("{}/termsymbolic.txt", rootPath);
@@ -136,4 +135,29 @@ fn driverFunction(rootPath: &str, file: &str) {
         &T,
         &terminal_indices,
     );
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn grammar1() {
+        let file = "ex.c";
+        let grammar = "Grammar1";
+        driverFunction(
+            ("source_files/".to_owned() + grammar).as_str(),
+            ("example_files/".to_owned() + file).as_str(),
+        );
+    }
+
+    #[test]
+    fn grammar2() {
+        let file = "ex2.c";
+        let grammar = "Grammar2";
+        driverFunction(
+            ("source_files/".to_owned() + grammar).as_str(),
+            ("example_files/".to_owned() + file).as_str(),
+        );
+    }
 }

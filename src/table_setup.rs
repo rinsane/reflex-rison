@@ -4,7 +4,7 @@ use std::clone::Clone;
 use std::cmp::PartialEq;
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
-use std::io::{self, Write, BufRead};
+use std::io::{self, BufRead, Write};
 use std::marker::Copy;
 use std::path::Path;
 

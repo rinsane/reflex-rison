@@ -1,0 +1,18 @@
+PrintStmt
+    : PRINT LBRACKET QUOTE Arg QUOTE RBRACKET
+    ;
+
+Arg
+    : String
+    : Number
+    ;
+
+String
+    : CHAR String
+    : Null
+    ;
+
+Number
+    : DIGIT Number
+    : Null
+    ;
