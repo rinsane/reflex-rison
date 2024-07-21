@@ -16,13 +16,13 @@ Is null true
 6
 Is terminal true
 Is null true
-{9, 6, 5}
+{6, 9, 5}
 Done F
 
-{5, 9, 6}
+{6, 9, 5}
 Done T
 
-{9, 6, 5}
+{9, 5, 6}
 Done E
 
 Call Ed

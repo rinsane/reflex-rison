@@ -1,8 +1,8 @@
 E
 [
 leftb
-num
 id
+num
 ]
 Ed
 [
@@ -10,9 +10,9 @@ plus
 ]
 T
 [
-id
-leftb
 num
+leftb
+id
 ]
 Td
 [
@@ -20,8 +20,8 @@ asterisk
 ]
 F
 [
-leftb
 num
+leftb
 id
 ]
 id

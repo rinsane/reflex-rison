@@ -1,13 +1,13 @@
+mod file_io;
+
 use std::clone::Clone;
 use std::cmp::PartialEq;
-use std::collections::HashMap;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fs::File;
-use std::io::Write;
-use std::io::{self, BufRead};
+use std::io::{self, Write, BufRead};
 use std::marker::Copy;
 use std::path::Path;
-mod file_io;
+
 pub enum SymbolType {
     Terminal,
     NonTerminal,
@@ -121,7 +121,7 @@ pub fn construct(
     check_nullability(&mut nullables, &mut rules, &map, &terminal_indices);
     // rules = dbg!(rules);
     // nullables = dbg!(nullables);
-    let mut fi = match File::create("iofiles/rules.txt") {
+    let mut fi = match File::create("io_files/rules.txt") {
         Ok(file) => file,
         Err(err) => {
             eprintln!("Failed to create file: {}", err);
@@ -214,7 +214,7 @@ pub fn calFIRST(
 
     // Iterate over the sorted pairs
     // Iterate over the sorted pairs
-    let mut fi = match File::create("iofiles/Error.txt") {
+    let mut fi = match File::create("io_files/Error.txt") {
         Ok(file) => file,
         Err(err) => {
             eprintln!("Failed to create file: {}", err);
@@ -256,7 +256,7 @@ pub fn calFIRST(
         progress[index] = true;
     }
 
-    let output_file = "iofiles/First.txt";
+    let output_file = "io_files/First.txt";
     let mut file = match File::create(output_file) {
         Ok(file) => file,
         Err(err) => {
@@ -455,7 +455,7 @@ pub fn calFollow(
     }
 
     // File writing logic
-    let output_file = "iofiles/Follow.txt";
+    let output_file = "io_files/Follow.txt";
     let mut file = match File::create(output_file) {
         Ok(file) => file,
         Err(err) => {

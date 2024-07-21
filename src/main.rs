@@ -4,22 +4,26 @@
 mod lexer;
 mod parseTree;
 mod table_setup;
-use std::collections::{HashMap, HashSet};
-use ansi_term::Colour;
+
 use lexer::*;
 use parseTree::*;
-use rand::prelude::*;
-use std::cmp;
 use table_setup::*;
+
+use ansi_term::Colour;
+use rand::prelude::*;
 use term_size::dimensions_stdout;
+use std::cmp;
+use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead};
-use std::path::Path;
 
 fn main() {
-
-    let file = "example_file/ex.c";
-    driverFunction("source_files/Grammar1", file);
+    let file = "ex.c";
+    let grammar = "Grammar1";
+    driverFunction(
+        ("source_files/".to_owned() + grammar).as_str(),
+        ("example_files/".to_owned() + file).as_str(),
+    );
 }
 
 fn driverFunction(rootPath: &str, file: &str) {
@@ -31,26 +35,34 @@ fn driverFunction(rootPath: &str, file: &str) {
     let production_rules = format!("{}/cfg.txt", rootPath);
 
     //Keywords
-    let key: HashMap<&str, &str> = {
-        let mut map = HashMap::new();
-        map.insert("id", "id");
-        map.insert("num", "num");
-        map.insert("+", "plus");
-        map.insert("*", "asterisk");
-        map.insert("(", "leftb");
-        map.insert(")", "rightb");
-        map
-    };
-    let keyy: HashSet<&str> = {
-        let mut map = HashSet::new();
-        map.insert("id");
-        map.insert("num");
-        map.insert("+");
-        map.insert("*");
-        map.insert("(");
-        map.insert(")");
-        map
-    };
+    let tsp = File::open(&terminals_symbolic_path).unwrap();
+    let tsp = io::BufReader::new(tsp);
+    let tsp: Vec<String> = tsp
+        .lines()
+        .map(|l| {
+            l.expect("Could not parse line")
+                .trim_start_matches('\u{feff}')
+                .to_string()
+        })
+        .collect();
+
+    let tp = File::open(&terminals_path).unwrap();
+    let tp = io::BufReader::new(tp);
+    let tp: Vec<String> = tp
+        .lines()
+        .map(|l| {
+            l.expect("Could not parse line")
+                .trim_start_matches('\u{feff}')
+                .to_string()
+        })
+        .collect();
+
+    let mut key: HashMap<&str, &str> = HashMap::new();
+    let mut keyy: HashSet<&str> = HashSet::new();
+    for (k, v) in tsp.iter().zip(tp.iter()) {
+        key.insert(k, v);
+        keyy.insert(k);
+    }
 
     //Some code
     let (
@@ -107,9 +119,7 @@ fn driverFunction(rootPath: &str, file: &str) {
     let (term_width, _) = dimensions_stdout().unwrap_or((80, 25)); // Default width: 80
 
     // Text content
-    let text = format!(
-        "Parse Tree for the provided snippet:\n\n",
-    );
+    let text = format!("Parse Tree for the provided snippet:\n\n",);
 
     // Calculate padding
     let padding = cmp::max(0, (term_width as isize - text.len() as isize) / 2);
